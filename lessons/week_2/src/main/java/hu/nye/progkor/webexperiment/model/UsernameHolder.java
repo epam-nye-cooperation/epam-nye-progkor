@@ -1,4 +1,4 @@
-package com.nye.progkor.webexperiment.model;
+package hu.nye.progkor.webexperiment.model;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ public class UsernameHolder {
 
     public void reset() {
         this.name = DEFAULT_NAME;
-    };
+    }
 
     public String getName() {
         return name;

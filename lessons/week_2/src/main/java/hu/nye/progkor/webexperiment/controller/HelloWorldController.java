@@ -1,6 +1,6 @@
-package com.nye.progkor.webexperiment.controller;
+package hu.nye.progkor.webexperiment.controller;
 
-import com.nye.progkor.webexperiment.model.UsernameHolder;
+import hu.nye.progkor.webexperiment.model.UsernameHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
