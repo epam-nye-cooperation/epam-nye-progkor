@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en"
+       xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title of the document</title>
+    </head>
+    <body>
+        <div>Hello, <span th:utext="${name}">World</span>!</div>
+        <a th:href="@{/welcome-form}">Modify your name</a>
+    </body>
+</html>
