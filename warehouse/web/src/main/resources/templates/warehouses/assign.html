@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Termék raktárhoz rendelése</title>
+
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div th:insert="~{shared/navBar :: navbar}"></div>
+
+<div class="container">
+    <h3 class="pt-5">Termékek raktárhoz rendelés adatlap</h3>
+
+    <div class="row">
+        <div class="col-md-4 mt-5">
+            <form method="post"
+                  th:action="@{/warehouses/products/assign}">
+                <div class="form-group">
+                    <label for="name">Termék raktárhoz rendelése</label>
+                </div>
+                <div class="form-group">
+                    <label for="productId">Termék ID</label>
+                    <input type="text"
+                           id="productId"
+                           class="form-control"
+                           readonly
+                           th:name="productId"
+                           th:value="${product.id}"/>
+                </div>
+                <div class="form-group">
+                    <label for="name">Név</label>
+                    <input type="text"
+                           id="name"
+                           class="form-control"
+                           readonly
+                           th:name="name"
+                           th:value="${product.name}"/>
+                </div>
+                <div class="form-group">
+                    <label for="netValue">Nettó érték</label>
+                    <input type="number"
+                           id="netValue"
+                           class="form-control"
+                           min="1"
+                           step="1"
+                           readonly
+                           th:name="netValue"
+                           th:value="${product.netValue}"/>
+                </div>
+                <div class="form-group">
+                    <label for="size">Méret</label>
+                    <input type="number"
+                           id="size"
+                           class="form-control"
+                           min="0.01"
+                           step="0.01"
+                           readonly
+                           th:name="size"
+                           th:value="${product.size}"/>
+                </div>
+                <div class="form-group">
+                    <label for="foodStorageType">Tárolás módja</label>
+                    <select id="foodStorageType"
+                            name="foodStorageType"
+                            class="form-control form-select"
+                            disabled>
+                        <option th:value="${T(hu.nye.progkor.warehouse.model.FoodStorageType).NORMAL_FOOD}"
+                                th:text="Szárazon"
+                                th:selected="${product.foodStorageType} == ${T(hu.nye.progkor.warehouse.model.FoodStorageType).NORMAL_FOOD} ? true : false"></option>
+                        <option th:value="${T(hu.nye.progkor.warehouse.model.FoodStorageType).TO_BE_COOLED_FOOD}"
+                                th:text="Hűtve"
+                                th:selected="${product.foodStorageType} == ${T(hu.nye.progkor.warehouse.model.FoodStorageType).TO_BE_COOLED_FOOD} ? true : false"></option>
+                        <option th:value="${T(hu.nye.progkor.warehouse.model.FoodStorageType).TO_BE_FROZEN_FOOD}"
+                                th:text="Fagyasztva"
+                                th:selected="${product.foodStorageType} == ${T(hu.nye.progkor.warehouse.model.FoodStorageType).TO_BE_FROZEN_FOOD} ? true : false"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Leírás</label>
+                    <textarea id="description"
+                              th:name="description"
+                              rows="4"
+                              spellcheck="false"
+                              class="form-control"
+                              readonly
+                              th:text="${product.description}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="size">Mennyiség</label>
+                    <input type="number"
+                           id="quantity"
+                           class="form-control"
+                           min="10"
+                           step="5"
+                           th:name="quantity"
+                           th:value="150"/>
+                </div>
+                <div class="form-group">
+                    <label for="warehouseId">Raktárak</label>
+                    <select id="warehouseId"
+                            name="warehouseId"
+                            class="form-control form-select">
+                        <option th:each="warehouse : ${warehouses}"
+                                th:value="${warehouse.id}"
+                                th:text="${warehouse.location}">
+                    </select>
+                </div>
+                <button class="btn btn-primary"
+                        type="submit">Raktárhoz rendelés
+                </button>
+                <a th:href="@{/products/list.html}"
+                   class="btn btn-secondary"
+                   type="submit">Mégsem</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>

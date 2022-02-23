@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Termékek listája</title>
+
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div th:insert="~{shared/navBar :: navbar}"></div>
+
+<div class="container">
+    <h3 class="pt-5">Termékek listája</h3>
+
+    <div th:insert="~{shared/message :: message}"></div>
+
+    <table class="table table-striped pt-5">
+        <caption>Termékek listája</caption>
+        <thread>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Név</th>
+                <th scope="col">Nettó ár</th>
+                <th scope="col">Méret m<sup>3</sup></th>
+                <th scope="col">Tárolás</th>
+                <th scope="col">Leírás</th>
+                <th scope="col">Műveletek</th>
+            </tr>
+        </thread>
+        <tbody>
+        <tr th:each="product: ${products}">
+            <th scope="row"
+                th:text="${product.id}"></th>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.netValue}"></td>
+            <td th:text="${product.size}"></td>
+            <td>
+                <div th:switch="${product.foodStorageType}">
+                    <p th:case="${T(hu.nye.progkor.warehouse.model.FoodStorageType).NORMAL_FOOD}">Szárazon</p>
+                    <p th:case="${T(hu.nye.progkor.warehouse.model.FoodStorageType).TO_BE_FROZEN_FOOD}">Fagyasztva</p>
+                    <p th:case="${T(hu.nye.progkor.warehouse.model.FoodStorageType).TO_BE_COOLED_FOOD}">Hűtve</p>
+                    <p th:case="*">Nincs adat</p>
+                </div>
+            </td>
+            <td th:text="${product.description}">
+            <td>
+                <a th:href="@{'/warehouses/products/' + ${product.id} + '/assign.html'}"
+                   type="button"
+                   class="btn btn-info">Raktárhoz rendelés</a>
+                <a th:href="@{'/products/' + ${product.id} + '/edit.html'}"
+                   type="button"
+                   class="btn btn-warning">Szerkesztés</a>
+                <a th:href="@{'/products/remove/' + ${product.id}}"
+                   type="button"
+                   class="btn btn-danger">Törlés</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>

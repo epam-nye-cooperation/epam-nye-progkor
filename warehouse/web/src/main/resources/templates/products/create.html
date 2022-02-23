@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Product Creating form</title>
+
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div th:insert="~{shared/navBar :: navbar}"></div>
+
+<div class="container">
+
+    <h3 class="pt-5">Termék létrehozás</h3>
+
+    <div th:if="${success != null}">
+        <div th:if="${success}"
+             class="alert alert-success"
+             role="alert">
+            <p>Sikeres művelet végrehajtás!</p>
+            <div class="col-md-4 mt-5">
+                <div class="form-group">
+                    <label for="name">Mentett termék adatai</label>
+                </div>
+                <div class="form-group">
+                    <label for="name">Azonosító</label>
+                    <input type="numeric"
+                           readonly
+                           id="saved_id"
+                           th:value="${product != null ? product.id : 0}"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="name">Név</label>
+                    <input type="text"
+                           readonly
+                           id="saved_name"
+                           th:value="${product != null ? product.name : 'Nincs adat'}"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="netValue">Nettó érték</label>
+                    <input type="text"
+                           readonly
+                           id="saved_netValue"
+                           th:value="${product != null ? product.netValue : 'Nincs adat'}"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="saved_size">Méret</label>
+                    <input type="text"
+                           readonly
+                           id="saved_size"
+                           th:value="${product != null ? product.size : 'Nincs adat'}"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="saved_foodStorageType">Tárolás</label>
+                    <input type="text"
+                           readonly
+                           id="saved_foodStorageType"
+                           th:value="${product != null ? product.foodStorageType.value : 'Nincs adat'}"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="description">Leírás</label>
+                    <textarea readonly
+                              id="saved_description"
+                              th:text="${product != null ? product.description : 'Nincs adat'}"
+                              class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <div th:unless="${success}"
+             class="alert alert-danger"
+             role="alert">
+            <p>Sikertelen művelet végrehajtás!</p>
+            <p th:value="${message}"></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mt-5">
+            <form method="post"
+                  th:action="@{/products/create}">
+                <div class="form-group">
+                    <label for="name">Termék készítő form</label>
+                </div>
+                <div class="form-group">
+                    <label for="name">Név</label>
+                    <input type="text"
+                           id="name"
+                           th:name="name"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="netValue">Nettó érték</label>
+                    <input type="number"
+                           id="netValue"
+                           th:name="netValue"
+                           min="1"
+                           step="1"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="size">Méret</label>
+                    <input type="number"
+                           id="size"
+                           th:name="size"
+                           min="0.1"
+                           step="0.1"
+                           value="0.5"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="foodStorageType">Szükséges tárolás típusa</label>
+                    <select id="foodStorageType"
+                            name="foodStorageType"
+                            class="form-control form-select">
+                        <option th:value="${T(hu.nye.progkor.warehouse.model.FoodStorageType).NORMAL_FOOD}"
+                                th:text="Szárazon"></option>
+                        <option th:value="${T(hu.nye.progkor.warehouse.model.FoodStorageType).TO_BE_FROZEN_FOOD}"
+                                th:text="Fagyasztva"></option>
+                        <option th:value="${T(hu.nye.progkor.warehouse.model.FoodStorageType).TO_BE_COOLED_FOOD}"
+                                th:text="Hűtve"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Leírás</label>
+                    <textarea id="description"
+                              th:name="description"
+                              class="form-control"></textarea>
+                </div>
+                <button class="btn btn-primary pt-2"
+                        type="submit">Termék készítés
+                </button>
+                <a th:href="@{/products/list.html}"
+                   class="btn btn-secondary pt-2"
+                   type="submit">Mégsem</a>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>

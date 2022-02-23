@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  jpa:
+    hibernate.ddl-auto: update
+  datasource:
+    url: jdbc:h2:mem:warehouse
+    username: sa
+    password: s3CR3T
+    h2:
+      console:
+        enabled: true
+        path: /h2-console
