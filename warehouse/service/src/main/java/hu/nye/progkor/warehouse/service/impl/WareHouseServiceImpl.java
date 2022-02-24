@@ -38,6 +38,13 @@ public class WareHouseServiceImpl implements WareHouseService {
     }
 
     @Override
+    public WareHouseDTO getWareHouse(final Long id) {
+        return wareHouseRepository.findById(id)
+                .map(wareHouseEntityToDtoConverter::convert)
+                .orElseThrow(() -> new NotFoundException(NO_WAREHOUSE_ERROR_MESSAGE + id));
+    }
+
+    @Override
     public void moveProductsToWareHouse(final Long wareHouseId, final Long productId, final Long quantity) {
         final Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException(NO_PRODUCT_ERROR_MESSAGE + productId));
