@@ -13,8 +13,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,15 +48,10 @@ public class WareHouseController {
 
     @ResponseBody
     @GetMapping("/{id}")
-    public ResponseEntity<WareHouseResponse> getWarehouse(final @PathVariable Long id) {
+    public WareHouseResponse getWarehouse(final @PathVariable Long id) {
         log.info("Get a Warehouse with ID:{}", id);
-        try {
-            final WareHouseDTO wareHouse = wareHouseService.getWareHouse(id);
-            final WareHouseResponse wareHouseResponse = wareHouseDTOWareHouseResponseConverter.convert(wareHouse);
-            return new ResponseEntity<>(wareHouseResponse, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        final WareHouseDTO wareHouse = wareHouseService.getWareHouse(id);
+        return wareHouseDTOWareHouseResponseConverter.convert(wareHouse);
     }
 
     @GetMapping("/products/{id}/assign.html")
