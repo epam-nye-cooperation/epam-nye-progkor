@@ -48,10 +48,13 @@ public class WareHouseController {
 
     @ResponseBody
     @GetMapping("/{id}")
-    public WareHouseResponse getWarehouse(final @PathVariable Long id) {
+    public ModelAndView getWarehouse(final @PathVariable Long id) {
         log.info("Get a Warehouse with ID:{}", id);
+        final ModelAndView warehouseView = new ModelAndView("warehouses/warehouse");
         final WareHouseDTO wareHouse = wareHouseService.getWareHouse(id);
-        return wareHouseDTOWareHouseResponseConverter.convert(wareHouse);
+        final WareHouseResponse wareHouseResponse = wareHouseDTOWareHouseResponseConverter.convert(wareHouse);
+        warehouseView.addObject("warehouse", wareHouseResponse);
+        return warehouseView;
     }
 
     @GetMapping("/products/{id}/assign.html")
