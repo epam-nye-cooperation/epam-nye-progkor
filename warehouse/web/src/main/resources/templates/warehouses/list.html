@@ -101,7 +101,7 @@
                                     </p>
                                     <div class="collapse"
                                          th:id="'productsOfStorage-' + ${storage.id}">
-                                        <table class="table table-info">
+                                        <table class="table table-info" th:if="${storage.products != null and !storage.products.empty}">
                                             <caption>Termékek listája</caption>
                                             <thread>
                                                 <tr>
@@ -135,6 +135,7 @@
                                             <tr></tr>
                                             </tbody>
                                         </table>
+                                        <p th:if="${storage.products == null or storage.products.empty}">Nincs tárolt termék</p>
                                     </div>
                                 </td>
                             </tr>
