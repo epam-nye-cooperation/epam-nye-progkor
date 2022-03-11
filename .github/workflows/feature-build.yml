@@ -1,14 +1,18 @@
-# This is a basic workflow that is manually triggered
+name: Workflow for branch builds
 
-name: Manual workflow for branch builds
-
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+      - 'release/**'
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
