@@ -23,8 +23,13 @@ jobs:
         cache: maven
     - name: Build and deploy with Maven
       run: |
+        # Versioning setup
         version_prefix=`mvn help:evaluate -Dexpression=project.version --quiet -DforceStdout --file warehouse/pom.xml | awk -F. '{print $1"."$2}'`
-        version="$version_prefix.${{github.run_number}}-b$GITHUB_SHA"
-        echo "Setting artifact version to $version..."
+        version="$version_prefix.${{github.run_number}}-$GITHUB_SHA"
+        echo "Setting artifact version to $version"
+        # Overwrite local artifact version
+        mvn -B versions:set -DnewVersion="$version" --file warehouse/pom.xml
+        # Build and deploy artifact
+        mvn -B deploy --file warehouse/pom.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
