@@ -22,6 +22,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build and deploy with Maven
-      run: mvn -B deploy --file warehouse/pom.xml
+      run: |
+        version_prefix=`mvn help:evaluate -Dexpression=project.version --quiet -DforceStdout --file warehouse/pom.xml | awk -F. '{print $1"."$2}'`
+        version="$version_prefix.${{github.run_number}}-b$GITHUB_SHA"
+        echo "Setting artifact version to $version..."
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
