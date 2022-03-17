@@ -98,7 +98,7 @@ public class ProductController {
         } catch (NotFoundException e) {
             redirectAttributes.addFlashAttribute(MESSAGE_ATTRIBUTE, "Nem létezik a termék, ID:" + id);
         } catch (ProductUpdateException e) {
-            redirectAttributes.addFlashAttribute(MESSAGE_ATTRIBUTE, "Nem lehetett módosítani a terméket, mert már raktárhoz van rendelve, ID:" + id);
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTRIBUTE, "Nem lehetett módosítani a terméket, mert már raktárhoz van rendelve, Termék azonosító:" + id);
         }
         redirectAttributes.addFlashAttribute(SUCCESS_ATTRIBUTE, false);
         return REDIRECT_PRODUCTS_LIST_HTML_ENDPOINT;
