@@ -1,4 +1,5 @@
-.idea/
-target/
-.jpb/
-*.iml
+# Ignore all
+*
+
+# Whitelist path to the runnable
+!web/target/
