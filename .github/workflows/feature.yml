@@ -5,6 +5,7 @@ name: Feature workflow
 
 on:
   push:
+    branches:
     - 'feature/**'
     - 'bugfix/**'
     - 'hotfix/**'
