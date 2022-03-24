@@ -6,14 +6,14 @@ name: Main workflow
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -23,5 +23,16 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file warehouse/pom.xml
+    - name: Build and publish with Maven
+      run: |
+        # Versioning setup
+        version_prefix=`mvn help:evaluate -Dexpression=project.version --quiet -DforceStdout --file warehouse/pom.xml | awk -F. '{print $1"."$2}'`
+        version="$version_prefix.${{github.run_number}}"
+        echo "Setting artifact version to $version"
+        # Push version to env
+        echo "ARTIFACT_VERSION=$version" >> $GITHUB_ENV
+        # Overwrite local artifact version
+        mvn -B versions:set -DnewVersion="$version" --file warehouse/pom.xml
+        mvn -B deploy --file warehouse/pom.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
