@@ -10,6 +10,7 @@ on:
 env:
   DOCKER_REGISTRY: ghcr.io
   DOCKER_IMAGE_NAME: ${{ github.repository }}
+  HEROKU_APP_NAME: 'zoltan-pal-epam-nye-progkor'
 
 jobs:
   build:
@@ -60,3 +61,31 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+    outputs:
+        artifactVersion: ${{ env.ARTIFACT_VERSION }}
+  deploy:
+    name: Deploy to Heroku
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to the GitHub Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to the Heroku Container registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
+      - name: Get image from packages, tag and push to Heroku
+        run: |
+          docker pull ghcr.io/zoltan-pal/epam-nye-progkor:${{ env.ARTIFACT_VERSION }}
+          docker tag ghcr.io/zoltan-pal/epam-nye-progkor:${{ env.ARTIFACT_VERSION }} registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
+          docker push registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
+        env:
+          ARTIFACT_VERSION: ${{ needs.build.outputs.artifactVersion }}
+      - name: Release app on Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release -a ${{ env.HEROKU_APP_NAME }} web
