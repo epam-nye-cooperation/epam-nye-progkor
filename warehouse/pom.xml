@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.epam.university</groupId>
-    <artifactId>Warehouse</artifactId>
+    <artifactId>warehouse</artifactId>
     <version>0.1.0</version>
 
     <packaging>pom</packaging>
@@ -178,4 +178,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/epam-nye-cooperation/epam-nye-progkor</url>
+        </repository>
+    </distributionManagement>
 </project>

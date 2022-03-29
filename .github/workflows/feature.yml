@@ -1,15 +1,26 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Featrure workflow
+name: Feature workflow
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+    - 'feature/**'
+    - 'bugfix/**'
+    - 'hotfix/**'
+    - 'release/**'
+
+env:
+  DOCKER_REGISTRY: ghcr.io
+  DOCKER_IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -19,5 +30,37 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file warehouse/pom.xml
+    - name: Build and publish with Maven
+      run: |
+        # Versioning setup
+        version_prefix=`mvn help:evaluate -Dexpression=project.version --quiet -DforceStdout --file warehouse/pom.xml | awk -F. '{print $1"."$2}'`
+        version="$version_prefix.${{github.run_number}}-$GITHUB_SHA"
+        echo "Setting artifact version to $version"
+        # Push version to env
+        echo "ARTIFACT_VERSION=$version" >> $GITHUB_ENV
+        # Overwrite local artifact version
+        mvn -B versions:set -DnewVersion="$version" --file warehouse/pom.xml
+        mvn -B deploy --file warehouse/pom.xml
+        cp "warehouse/web/target/web-${version}.jar" "warehouse/web/target/warehouse.jar"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Log in to the Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ${{ env.DOCKER_REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+      with:
+        images: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}
+        tags: |
+          type=raw,value=${{ env.ARTIFACT_VERSION }}
+    - name: Build and push Docker image
+      uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      with:
+        context: ./warehouse
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
