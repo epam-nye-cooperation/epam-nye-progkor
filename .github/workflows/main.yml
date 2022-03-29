@@ -10,7 +10,7 @@ on:
 env:
   DOCKER_REGISTRY: ghcr.io
   DOCKER_IMAGE_NAME: ${{ github.repository }}
-  HEROKU_APP_NAME: 'zoltan-pal-epam-nye-progkor'
+  HEROKU_APP_NAME: 'nye-progkor-warehouse'
 
 jobs:
   build:
