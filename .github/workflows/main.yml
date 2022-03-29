@@ -3,12 +3,8 @@
 
 name: Main workflow
 
-on:
-  push:
-    branches: [ main ]
+on: workflow_dispatch
     
-    workflow_dispatch
-
 env:
   DOCKER_REGISTRY: ghcr.io
   DOCKER_IMAGE_NAME: ${{ github.repository }}
