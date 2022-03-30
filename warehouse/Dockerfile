@@ -1,5 +1,5 @@
 FROM openjdk:17-jdk-alpine3.14
 
-COPY "./web/target/warehouse.jar" "/application/warehouse.jar"
+COPY "./web/target/web.jar" "/application/web.jar"
 
-CMD ["java", "-jar", "/application/warehouse.jar"]
+CMD ["java", "-jar", "/application/web.jar"]
