@@ -3,9 +3,7 @@
 
 name: Main workflow
 
-on:
-  push:
-    branches: [ main ]
+on: workflow_dispatch
 
 env:
   DOCKER_REGISTRY: ghcr.io
