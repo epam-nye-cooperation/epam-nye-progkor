@@ -3,7 +3,9 @@
 
 name: Main workflow
 
-on: workflow_dispatch
+on:
+  push:
+    branches: [ main ]
 
 env:
   DOCKER_REGISTRY: ghcr.io
@@ -37,6 +39,7 @@ jobs:
         # Overwrite local artifact version
         mvn -B versions:set -DnewVersion="$version" --file warehouse/pom.xml
         mvn -B deploy --file warehouse/pom.xml
+        cp "warehouse/web/target/web-${version}.jar" "warehouse/web/target/warehouse.jar"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Log in to the Container registry
@@ -78,8 +81,8 @@ jobs:
         run: heroku container:login
       - name: Get image from packages, tag and push to Heroku
         run: |
-          docker pull ghcr.io/zoltan-pal/epam-nye-progkor:${{ env.ARTIFACT_VERSION }}
-          docker tag ghcr.io/zoltan-pal/epam-nye-progkor:${{ env.ARTIFACT_VERSION }} registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
+          docker pull ghcr.io/epam-nye-cooperation/epam-nye-progkor:${{ env.ARTIFACT_VERSION }}
+          docker tag ghcr.io/epam-nye-cooperation/epam-nye-progkor:${{ env.ARTIFACT_VERSION }} registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
           docker push registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
         env:
           ARTIFACT_VERSION: ${{ needs.build.outputs.artifactVersion }}
