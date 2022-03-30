@@ -79,8 +79,8 @@ jobs:
         run: heroku container:login
       - name: Get image from packages, tag and push to Heroku
         run: |
-          docker pull ghcr.io/zoltan-pal/epam-nye-progkor:${{ env.ARTIFACT_VERSION }}
-          docker tag ghcr.io/zoltan-pal/epam-nye-progkor:${{ env.ARTIFACT_VERSION }} registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
+          docker pull ghcr.io/epam-nye-cooperation/epam-nye-progkor:${{ env.ARTIFACT_VERSION }}
+          docker tag ghcr.io/epam-nye-cooperation/epam-nye-progkor:${{ env.ARTIFACT_VERSION }} registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
           docker push registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
         env:
           ARTIFACT_VERSION: ${{ needs.build.outputs.artifactVersion }}
