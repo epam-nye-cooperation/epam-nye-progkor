@@ -37,6 +37,7 @@ jobs:
         # Overwrite local artifact version
         mvn -B versions:set -DnewVersion="$version" --file warehouse/pom.xml
         mvn -B deploy --file warehouse/pom.xml
+        cp "warehouse/web/target/web-${version}.jar" "warehouse/web/target/warehouse.jar"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Log in to the Container registry
