@@ -12,7 +12,7 @@ public class GreetingGenerator {
         IRender render = new Render();
         IContextBuilder builder = render.newBuilder();
         builder.width(120).height(20);
-        builder.element(new PseudoText("Hello, World!"));
+        builder.element(new PseudoText("Hello, Csaba!"));
         ICanvas canvas = render.render(builder.build());
         return canvas.getText();
     }
