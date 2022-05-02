@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+
+  helloSvc:
+    image: hellosvc:latest
+    container_name: hellosvc
+    ports:
+    - "8080:8080"
+
+  debian:
+    image: my-debian:latest
+    container_name: my-debian
+    command: /bin/sh -c "echo 'Waiting for hellosvc'; sleep 10; curl hellosvc:8080/hello > /internal/hello.txt"
+    depends_on:
+      - helloSvc
+    volumes:
+    - ./debian-volume:/internal
