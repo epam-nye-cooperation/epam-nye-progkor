@@ -1,7 +1,4 @@
-# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
-
-name: Maven Package
+name: Main workflow
 
 on:
   push:
@@ -10,12 +7,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -26,7 +21,9 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
     - name: Build and publish with Maven
-      run: mvn -B deploy --file spring-core/pom.xml
+      run: |
+        VERSION=$(./build/create-semver.sh spring-core/pom.xml "${{github.run_number}}")
+        mvn -B versions:set -DnewVersion="${VERSION}" --file spring-core/pom.xml
+        mvn -B package --file spring-core/pom.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
