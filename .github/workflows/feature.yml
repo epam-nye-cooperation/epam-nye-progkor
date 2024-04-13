@@ -1,0 +1,29 @@
+name: Main workflow
+
+on:
+  push:
+    branches:
+      - feature/**
+      - bugfix/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+    - name: Build and publish with Maven
+      run: |
+        .build/create-semver.sh spring-core/pom.xml "${{github.run_number}}-$GITHUB_SHA"
+        # mvn -B package --file spring-core/pom.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
