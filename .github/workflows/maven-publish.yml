@@ -27,4 +27,6 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
     - name: Build and publish with Maven
       run: mvn -B deploy --file spring-core/pom.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
