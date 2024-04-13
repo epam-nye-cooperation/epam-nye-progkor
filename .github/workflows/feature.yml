@@ -24,7 +24,7 @@ jobs:
     - name: Build and publish with Maven
       run: |
         ls -hal build
-        .build/create-semver.sh spring-core/pom.xml "${{github.run_number}}-$GITHUB_SHA"
+        ./build/create-semver.sh spring-core/pom.xml "${{github.run_number}}-$GITHUB_SHA"
         # mvn -B package --file spring-core/pom.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
