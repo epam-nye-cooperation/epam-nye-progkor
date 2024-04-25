@@ -11,6 +11,7 @@ import hu.nye.progkor.warehouse.model.dto.ProductDTO;
 import hu.nye.progkor.warehouse.model.exception.NotFoundException;
 import hu.nye.progkor.warehouse.repository.ProductRepository;
 import hu.nye.progkor.warehouse.service.ProductService;
+import hu.nye.progkor.warehouse.service.WareHouseService;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,8 @@ class ProductServiceImplTest {
     @Mock
     private ProductRepository productRepository;
     @Mock
+    private WareHouseService wareHouseService;
+    @Mock
     private Converter<ProductDTO, Product> productDtoToEntityConverter;
     @Mock
     private Converter<Product, ProductDTO> productEntityToDtoConverter;
@@ -52,7 +55,7 @@ class ProductServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        underTest = new ProductServiceImpl(productRepository, productDtoToEntityConverter, productEntityToDtoConverter);
+        underTest = new ProductServiceImpl(productRepository, wareHouseService, productDtoToEntityConverter, productEntityToDtoConverter);
     }
 
     @Test
