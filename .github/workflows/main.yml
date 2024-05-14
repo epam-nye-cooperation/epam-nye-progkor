@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  DOCKER_REGISTRY: ghcr.io
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,7 +24,19 @@ jobs:
     - name: Build and publish with Maven
       run: |
         VERSION=$(./build/create-semver.sh spring-core/pom.xml "${{github.run_number}}")
+        echo "ARTIFACT_VERSION=${VERSION}" >> $GITHUB_ENV
         mvn -B versions:set -DnewVersion="${VERSION}" --file spring-core/pom.xml
         mvn -B deploy --file spring-core/pom.xml
+        cp "spring-core/target/core-${VERSION}.jar" "spring-core/target/spring-core.jar"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Log in to the Container registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.DOCKER_REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build and push Docker image
+      run: |
+        docker build ./spring-core -t ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/spring-core:${{ env.ARTIFACT_VERSION }}
+        docker push ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/spring-core:${{ env.ARTIFACT_VERSION }}
