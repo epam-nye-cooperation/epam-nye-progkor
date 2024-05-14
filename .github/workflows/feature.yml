@@ -1,4 +1,4 @@
-name: Main workflow
+name: Feature workflow
 
 on:
   push:
@@ -27,9 +27,8 @@ jobs:
         VERSION=$(./build/create-semver.sh spring-core/pom.xml "${{github.run_number}}-$GITHUB_SHA")
         echo "ARTIFACT_VERSION=${VERSION}" >> $GITHUB_ENV
         mvn -B versions:set -DnewVersion="${VERSION}" --file spring-core/pom.xml
-        ls -ahl spring-core/target
-        cp "spring-core/target/spring-core-${VERSION}.jar" "spring-core/target/spring-core.jar"
         mvn -B deploy --file spring-core/pom.xml
+        cp "spring-core/target/core-${VERSION}.jar" "spring-core/target/spring-core.jar"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Log in to the Container registry
