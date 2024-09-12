@@ -3,8 +3,10 @@ package hu.nye.progkor.warehouse.service.impl;
 import hu.nye.progkor.warehouse.model.Product;
 import hu.nye.progkor.warehouse.model.dto.ProductDTO;
 import hu.nye.progkor.warehouse.model.exception.NotFoundException;
+import hu.nye.progkor.warehouse.model.exception.ProductUpdateException;
 import hu.nye.progkor.warehouse.repository.ProductRepository;
 import hu.nye.progkor.warehouse.service.ProductService;
+import hu.nye.progkor.warehouse.service.WareHouseService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final WareHouseService wareHouseService;
     private final Converter<ProductDTO, Product> productDtoToEntityConverter;
     private final Converter<Product, ProductDTO> productEntityToDtoConverter;
 
@@ -52,6 +55,9 @@ public class ProductServiceImpl implements ProductService {
         log.info("Update Product with ID:{} to {}.", id, productChanges);
         final Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("There is no Product with ID:" + id));
+        if (productChanges.size() != product.getSize() && wareHouseService.isProductStored(id)) {
+            throw new ProductUpdateException("Size can not be changed because it is already stored!");
+        }
         product.setName(productChanges.name());
         product.setDescription(productChanges.description());
         product.setNetValue(productChanges.netValue());
