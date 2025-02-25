@@ -3,10 +3,13 @@ package hu.nye.progkor.webshop.domain.grossprice.impl;
 
 import hu.nye.progkor.webshop.domain.cart.ShoppingCartService;
 import hu.nye.progkor.webshop.domain.grossprice.GrossPriceCalculator;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HungarianTaxGrossPriceCalculator extends GrossPriceCalculatorDecorator {
 
-    public HungarianTaxGrossPriceCalculator(GrossPriceCalculator grossPriceCalculator) {
+    public HungarianTaxGrossPriceCalculator(@Qualifier("grossPriceCalculatorDecorator") GrossPriceCalculator grossPriceCalculator) {
         super(grossPriceCalculator);
     }
 

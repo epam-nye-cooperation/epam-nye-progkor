@@ -2,39 +2,61 @@ package hu.nye.progkor.webshop.domain.cart.impl;
 
 import hu.nye.progkor.webshop.domain.cart.ShoppingCartService;
 import hu.nye.progkor.webshop.domain.exception.NoSuchProductException;
-import hu.nye.progkor.webshop.domain.grossprice.impl.GrossPriceCalculatorDecorator;
-import hu.nye.progkor.webshop.domain.grossprice.impl.GrossPriceCalculatorImpl;
 import hu.nye.progkor.webshop.domain.grossprice.impl.HungarianTaxGrossPriceCalculator;
 import hu.nye.progkor.webshop.domain.order.Coupon;
 import hu.nye.progkor.webshop.domain.order.Observer;
 import hu.nye.progkor.webshop.domain.order.model.Cart;
 import hu.nye.progkor.webshop.domain.order.model.Product;
-import hu.nye.progkor.webshop.domain.order.model.impl.SimpleCart;
-import hu.nye.progkor.webshop.domain.order.orderconfirm.impl.EmailConfirmationAdapter;
-import hu.nye.progkor.webshop.domain.order.orderconfirm.impl.StubOrderConfirmationService;
-import hu.nye.progkor.webshop.domain.order.orderconfirm.lib.impl.EmailConfirmationService;
-import hu.nye.progkor.webshop.domain.warehouse.impl.StubWarehouse;
 import hu.nye.progkor.webshop.repository.OrderRepository;
 import hu.nye.progkor.webshop.repository.ProductRepository;
-import hu.nye.progkor.webshop.repository.impl.StubOrderRepository;
-import hu.nye.progkor.webshop.repository.impl.StubProductRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 
 @Slf4j
+@Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
-    private final Cart cart = new SimpleCart();
-    private final ProductRepository productRepository = new StubProductRepository();
-    private final OrderRepository orderRepository = new StubOrderRepository();
-    private final HungarianTaxGrossPriceCalculator grossPriceCalculatorDecorator = new HungarianTaxGrossPriceCalculator(new GrossPriceCalculatorDecorator(new GrossPriceCalculatorImpl()));
-    private final List<Observer> observers = List.of(
-            new EmailConfirmationAdapter(new EmailConfirmationService()),
-            new StubOrderConfirmationService(),
-            new StubWarehouse()
-    );
+    private final Cart cart;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final HungarianTaxGrossPriceCalculator grossPriceCalculatorDecorator;
+    private final List<Observer> observers;
 
+    // #1. Konstruktor DI stratégia, ez a preferált
+    public ShoppingCartServiceImpl(Cart cart, ProductRepository productRepository, OrderRepository orderRepository, HungarianTaxGrossPriceCalculator grossPriceCalculatorDecorator, List<Observer> observers) {
+        this.cart = cart;
+        this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
+        this.grossPriceCalculatorDecorator = grossPriceCalculatorDecorator;
+        this.observers = observers;
+    }
+
+    List<Observer> observersTemp2;
+
+    // #2. Setter DI stratégia
+    @Autowired
+    public void setObserversTemp2(List<Observer> observersTemp2) {
+        this.observersTemp2 = observersTemp2;
+    }
+
+    // #3. Reflexiós DI stratégia, ez a legkevésbé preferált
+    @Autowired
+    List<Observer> observersTemp;
+
+    @PostConstruct
+    public void populate() {
+        log.info("Succesfully initalized the Shopping cart.");
+    }
+
+    @PreDestroy
+    public void cleanUp() {
+        log.info("CleanUp process of the Shopping cart.");
+    }
 
     @Override
     public void order() {

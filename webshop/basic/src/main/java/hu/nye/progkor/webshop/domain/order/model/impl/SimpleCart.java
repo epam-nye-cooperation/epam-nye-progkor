@@ -6,14 +6,17 @@ import hu.nye.progkor.webshop.domain.order.model.Cart;
 import hu.nye.progkor.webshop.domain.order.model.Product;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
 @EqualsAndHashCode
+@Component
 public class SimpleCart implements Cart {
 
     private final List<Product> products = new ArrayList<>();
@@ -21,7 +24,7 @@ public class SimpleCart implements Cart {
 
     @Override
     public List<Product> getProducts() {
-        return products;
+        return Collections.unmodifiableList(products);
     }
 
     @Override

@@ -4,8 +4,10 @@ package hu.nye.progkor.webshop.domain.order.orderconfirm.impl;
 import hu.nye.progkor.webshop.domain.order.model.Cart;
 import hu.nye.progkor.webshop.domain.order.orderconfirm.OrderConfirmationService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class StubOrderConfirmationService implements OrderConfirmationService {
 
     @Override

@@ -2,11 +2,23 @@ package hu.nye.progkor.webshop.repository.impl;
 
 import hu.nye.progkor.webshop.domain.order.model.Product;
 import hu.nye.progkor.webshop.domain.order.model.impl.SimpleProduct;
+import hu.nye.progkor.webshop.repository.OrderRepository;
 import hu.nye.progkor.webshop.repository.ProductRepository;
+import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+//@Repository
+@Component
 public class StubProductRepository implements ProductRepository {
+
+    // Circular dependency
+    private final OrderRepository orderRepository;
+
+    public StubProductRepository(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     private static final List<Product> PRODUCTS = List.of(
             new SimpleProduct("Jonagold Apple", 2.99D),

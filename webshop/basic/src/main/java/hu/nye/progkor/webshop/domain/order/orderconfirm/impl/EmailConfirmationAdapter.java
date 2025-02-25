@@ -5,9 +5,11 @@ import hu.nye.progkor.webshop.domain.order.orderconfirm.OrderConfirmationService
 import hu.nye.progkor.webshop.domain.order.orderconfirm.lib.ConfirmationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @AllArgsConstructor
+@Component
 public class EmailConfirmationAdapter implements OrderConfirmationService {
 
     private ConfirmationService emailConfirmationService;

@@ -4,10 +4,12 @@ import hu.nye.progkor.webshop.domain.order.model.Cart;
 import hu.nye.progkor.webshop.domain.order.model.Product;
 import hu.nye.progkor.webshop.domain.warehouse.Warehouse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Slf4j
+@Component
 public class StubWarehouse implements Warehouse {
 
 

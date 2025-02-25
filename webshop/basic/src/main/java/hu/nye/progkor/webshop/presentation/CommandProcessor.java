@@ -4,15 +4,23 @@ import hu.nye.progkor.webshop.domain.cart.ShoppingCartService;
 import hu.nye.progkor.webshop.domain.cart.impl.ShoppingCartServiceImpl;
 import hu.nye.progkor.webshop.domain.exception.NoSuchProductException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
+@Component
 public class CommandProcessor {
 
-    private final ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl();
+    private final ShoppingCartService shoppingCartService;
+
+    @Autowired
+    public CommandProcessor(ShoppingCartService shoppingCartService) {
+        this.shoppingCartService = shoppingCartService;
+    }
 
     public void process() {
         Scanner scanner = new Scanner(System.in);
