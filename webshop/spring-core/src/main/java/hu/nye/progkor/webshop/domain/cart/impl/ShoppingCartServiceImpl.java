@@ -81,7 +81,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addProduct(String productName) throws NoSuchProductException {
-        Product productToAdd = productRepository.getAllProduct()
+        Product productToAdd = productRepository.findAllProducts()
                 .stream()
                 .filter(product -> product.name().equals(productName))
                 .findFirst()

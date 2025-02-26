@@ -1,7 +1,6 @@
 package hu.nye.progkor.webshop.presentation;
 
 import hu.nye.progkor.webshop.domain.cart.ShoppingCartService;
-import hu.nye.progkor.webshop.domain.cart.impl.ShoppingCartServiceImpl;
 import hu.nye.progkor.webshop.domain.exception.NoSuchProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
