@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5 mb-4">Edit Product</h1>
+    <form th:action="@{/products/update}" th:object="${product}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Enter product name" required />
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" th:field="*{netPrice}" class="form-control" id="price" placeholder="Enter product price" step="0.01" required />
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <a th:href="@{/products/list}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>
