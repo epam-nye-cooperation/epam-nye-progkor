@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Product</title>
-    <!-- Bootstrap CSS -->
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <!-- jQuery -->
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <!-- Popper.js (required by Bootstrap 4) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
     <h1 class="mt-5 mb-4">Edit Product</h1>
     <form th:action="@{/products/update}" th:object="${product}" method="post">
-        <!-- Include the product id as a hidden field -->
         <input type="hidden" th:field="*{id}" />
 
         <div class="form-group">
