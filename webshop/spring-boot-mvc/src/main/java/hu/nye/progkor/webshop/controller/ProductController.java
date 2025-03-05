@@ -52,4 +52,17 @@ public class ProductController {
         return "products/list";
     }
 
+    @GetMapping("/create")
+    public String showAddProductForm(Model model) {
+        model.addAttribute("product", new SimpleProduct(0l, "Enter the product name!", 0));
+        return "products/create";
+    }
+
+    @PostMapping("/create")
+    public String addProduct(Model model, @ModelAttribute("product") SimpleProduct simpleProduct) {
+        Product product = new SimpleProduct(simpleProduct.id(), simpleProduct.name(), simpleProduct.netPrice());
+        productRepository.saveProduct(product);
+        return "redirect:/products/list";
+    }
+
 }
