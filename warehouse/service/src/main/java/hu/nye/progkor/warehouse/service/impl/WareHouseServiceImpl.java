@@ -37,6 +37,13 @@ public class WareHouseServiceImpl implements WareHouseService {
                 .toList();
     }
 
+    public boolean isProductStored(final long id) {
+        return getWareHouses().stream()
+                .flatMap(wareHouseDTO -> wareHouseDTO.storages().stream())
+                .flatMap(storageDTO -> storageDTO.products().stream())
+                .anyMatch(productDTO -> productDTO.id() == id);
+    }
+
     @Override
     public WareHouseDTO getWareHouse(final Long id) {
         return wareHouseRepository.findById(id)

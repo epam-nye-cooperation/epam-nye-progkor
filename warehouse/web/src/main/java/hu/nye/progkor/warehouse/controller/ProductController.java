@@ -2,6 +2,7 @@ package hu.nye.progkor.warehouse.controller;
 
 import hu.nye.progkor.warehouse.model.dto.ProductDTO;
 import hu.nye.progkor.warehouse.model.exception.NotFoundException;
+import hu.nye.progkor.warehouse.model.exception.ProductUpdateException;
 import hu.nye.progkor.warehouse.model.request.ProductRequest;
 import hu.nye.progkor.warehouse.model.response.ProductResponse;
 import hu.nye.progkor.warehouse.service.ProductService;
@@ -96,9 +97,11 @@ public class ProductController {
             return "products/edit";
         } catch (NotFoundException e) {
             redirectAttributes.addFlashAttribute(MESSAGE_ATTRIBUTE, "Nem létezik a termék, ID:" + id);
-            redirectAttributes.addFlashAttribute(SUCCESS_ATTRIBUTE, false);
-            return REDIRECT_PRODUCTS_LIST_HTML_ENDPOINT;
+        } catch (ProductUpdateException e) {
+            redirectAttributes.addFlashAttribute(MESSAGE_ATTRIBUTE, "Nem lehetett módosítani a terméket, mert már raktárhoz van rendelve, Termék azonosító:" + id);
         }
+        redirectAttributes.addFlashAttribute(SUCCESS_ATTRIBUTE, false);
+        return REDIRECT_PRODUCTS_LIST_HTML_ENDPOINT;
     }
 
     @GetMapping(path = "/remove/{id}")
