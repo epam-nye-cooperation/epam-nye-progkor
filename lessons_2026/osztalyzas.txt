@@ -1,0 +1,32 @@
+kettes:
+A munka kezdésekor kezdjük el hasznűlni a GitHub repot (rich commit history).
+Egy publikus GitHub repo-ba kell feltölteni a megoldást (utolso commit vedes elotti ket nappal)
+Spring boot backend
+CRUD (Creat, Read, Update, Delete)
+2-3 adatbázis tábla ami össze van kötve (H2 in memory)
+REST API (JSON)
+
+Hármas:
+Jacoco
+Checkstyle (sikeresen lefutott checkstyle)
+Unit tesztek (Jacoco 30% lefedetseg) (Nem kell (nincs ertelme) tesztelni a model osztalyokat.)
+
+Négyes:
+unit tesztek (50% lefedetség)
+docker containerben futo MySQL vagy postgres adatbazis (ne legyen Nosql)
+Mukodo GitHub Acions workflow
+
+Ötös:
+Unit tesztek (75%)
+Docker containerben futo alkalmazas
+
+
+Osztályzás:
+Követelmények implementálásának értékelése
+Kód teszt lefedettség (Unit Test, Jacoco)
+Checkstyle violation check (formatting, line length, method-class line counts etc)
+Oktatók általi code review
+Clean code ellenőrzése
+Órákon tanult praktikák mennyisége
+
+kristof_lovasz@epam.com
