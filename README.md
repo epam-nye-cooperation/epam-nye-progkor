@@ -1,2 +1,1 @@
 # epam-nye-progkor
-# test
